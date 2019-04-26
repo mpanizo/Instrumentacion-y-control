@@ -70,6 +70,24 @@ def record(tau, fs):
 
 myrecording, time_total = record(3, fsamp)
 
+señal = [0]
+mylist = [0]
+
+def barridoamplitud():
+    amplitud = np.linspace(1,10,10)
+    for k in amplitud:
+        mylist.append(k) 
+    for j in amplitud:
+         j = int(j)
+         mylist [j-1] = GeneradorArray(0.1,20,j)
+#        myrecording  = sd.playrec(myarray, fsamp, channels=2)
+         time.sleep(1)  
+         señal.extend(mylist[j-1])
+    return señal
+
+ 
+plt.plot(barridoamplitud())  
+
 #print('my recording ', myrecording)
 #print('time total', time_total)
 
