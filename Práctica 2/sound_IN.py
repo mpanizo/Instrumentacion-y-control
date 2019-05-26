@@ -13,7 +13,7 @@ from generador import GeneradorFunciones
 
 
 
-%## """Entrada de Placa de audio, genera la señal un Generador de Funciones"""
+## """Entrada de Placa de audio, genera la señal un Generador de Funciones"""
 
 
 
@@ -29,16 +29,11 @@ def record(tau, fs):  #input: tiempo total que lee la placa de audio (s), con un
     return myrecording, time_total  #sirve para plotear la señal
 
 
-tau = 2 #s
-
-fsamp = 44100 #Hz
-
-frequency = np.linspace(400, 1000, 100)
 
 
 #generador de funciones manda una sinusoideal de frecuencia tal, el microfono lee un captura pantalla
 
-def barrido_frecuency_generador(): 
+def barrido_frecuency_generador(tau, frequency, fsamp = 44100): 
 
     vpp = []   
 
@@ -57,7 +52,35 @@ def barrido_frecuency_generador():
         vpp.append(2*max(my_recording)) #guardamos lo que sería aprox. el voltaje pico a pico
 
         tiempos.append(timetotal) #guardamos el array de tiempo
-
+        
+        #np.savetxt("Medicion" + str(f) + ".txt", timetotal, my_recording)
+    
+    #np.savetxt("Voltajevsfrecuencia.txt", np.transpose([frequency, np.array(vpp)]))
+        
     total = {'reco': reco, 'tiempos': tiempos, 'vpp': vpp}
 
-return total
+    return total
+
+def PloteameTalesFrecuencias(frequency, Variables, f):
+    for i in f:
+        print(frequency[i])
+        plt.plot(Variables['tiempos'][i], Variables['reco'][i])
+
+def SaveDictionary(Dic):
+    pass
+    
+    
+    
+
+
+#%%
+
+tau = 0.5 #s
+
+fsamp = 44100 #Hz
+
+frequency = np.linspace(1000, 30000, 60)
+
+Variables_entrada_azul = barrido_frecuency_generador(tau, frequency)
+
+
