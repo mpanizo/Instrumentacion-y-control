@@ -23,7 +23,7 @@ Pantallas = []
 TiemposPantallas = []
 Vpp = []
 
-Frec = np.linspace(1, 100, 200) #kHz
+Frec = np.linspace(1, 100, 100) #kHz
 
 #Barrido en frecuencia
 
