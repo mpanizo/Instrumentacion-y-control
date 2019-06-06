@@ -23,7 +23,7 @@ Pantallas = []
 TiemposPantallas = []
 Vpp = []
 
-Frec = np.linspace(1, 100, 100) #kHz
+Frec = np.linspace(1, 100, 200) #kHz
 
 #Barrido en frecuencia
 
@@ -31,7 +31,7 @@ for i in Frec:
 	Gen.SetFrequency(str(i) + ' kHz')
 	with ndq.Task() as task:
 	    task.ai_channels.add_ai_voltage_chan("Dev11/ai0") #por default mide en modo diferencial entre ai0(señal del generador) y ai1(tierra 	    del generador)
-	    frec_sampleo = 40000 #kHz
+	    frec_sampleo = 20000 #kHz
 	    N = 1000	    
 	    task.timing.cfg_samp_clk_timing(frec_sampleo, sample_mode= ndq.constants.AcquisitionType.FINITE, samps_per_chan=N) 
 	    #adquiero la data:
