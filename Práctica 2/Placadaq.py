@@ -19,7 +19,8 @@ from scipy.signal import find_peaks
 Gen = Generador.GeneradorFunciones()
 
     
-Pantallas = []
+Pantallas_0 = [] #vamos a medir dos canales, por eso armamos dos listas
+Pantallas_1 = []
 TiemposPantallas = []
 Vpp = []
 
@@ -30,7 +31,9 @@ Frec = np.linspace(1, 100, 200) #kHz
 for i in Frec:
 	Gen.SetFrequency(str(i) + ' kHz')
 	with ndq.Task() as task:
-	    task.ai_channels.add_ai_voltage_chan("Dev11/ai0") #por default mide en modo diferencial entre ai0(señal del generador) y ai1(tierra 	    del generador)
+	    task.ai_channels.add_ai_voltage_chan("Dev11/ai0",  terminal_config=ndq.constants.TerminalConfiguration.RSE)
+            task.ai_channels.add_ai_voltage_chan("Dev11/ai1",  terminal_config=ndq.constants.TerminalConfiguration.RSE)
+	    #hay que configurar el modo RSE sino por default mide en diferencial
 	    frec_sampleo = 20000 #kHz
 	    N = 1000	    
 	    task.timing.cfg_samp_clk_timing(frec_sampleo, sample_mode= ndq.constants.AcquisitionType.FINITE, samps_per_chan=N) 
@@ -39,15 +42,19 @@ for i in Frec:
 	    #espero a que termine de adquirir:
 	    task.wait_until_done()
 	    
-	    Pantallas.append(reading)
-	    TiemposPantallas.append(np.linspace(0, N/frec_sampleo, N))
             
-
+            read_0 = reading[0]
+            read_1 = reading[1]
+            
+            Pantallas_0.append(read_0)
+            Pantallas_1.append(read_1)
+            TiemposPantallas.append(np.linspace(0, N/frec_sampleo, N))
+            
 #Ploteo de las pantallas
           
 def PloteoPantalla(x):
     print(Frec[x])
-    plt.plot(TiemposPantallas[x], Pantallas[x], 'o')#, TiemposPantallas[x], CommonSin(TiemposPantallas[x], Frequencies[x], Phase[x]))
+    plt.plot(TiemposPantallas[x], Pantallas[x], 'o')
 
 #Transformada de Fourier para cada pantalla
 
